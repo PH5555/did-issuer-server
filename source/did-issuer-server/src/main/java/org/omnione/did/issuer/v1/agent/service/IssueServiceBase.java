@@ -261,6 +261,7 @@ public abstract class IssueServiceBase implements IssueService {
             profile.setId(RandomUtil.generateUUID());
 
             log.debug("\t--> Generate Key pair");
+            // bn254 edward
             EcKeyPair keyPair = generateEcKeyPair(reqE2e.getCurve());
 
             String nonce = BaseCryptoUtil.generateNonceWithMultibase(16);
@@ -806,6 +807,8 @@ public abstract class IssueServiceBase implements IssueService {
 
             VerifiableCredential verifiableCredential = vcManager.issueCredential(issueVcParam, holderDid);
             List<SignatureVcParams> signatureParams = vcManager.getOriginDataForSign("assert", didDocument, verifiableCredential);
+            
+            // 서명
             signVc(signatureParams);
 
             verifiableCredential = vcManager.addProof(verifiableCredential, signatureParams);

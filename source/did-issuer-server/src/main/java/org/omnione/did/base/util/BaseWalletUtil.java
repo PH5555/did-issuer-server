@@ -121,6 +121,8 @@ public class BaseWalletUtil {
      */
     public static void generateKeyPair(WalletManagerInterface walletManager, String keyId) {
         try {
+            // issuer key 생성
+            
             walletManager.generateRandomKey(keyId, CryptoKeyPairInfo.KeyAlgorithmType.SECP256r1);
         } catch (WalletException e) {
             if (e.getErrorCode().equals("SSDKWLT02005")) {

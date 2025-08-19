@@ -16,6 +16,7 @@
 
 package org.omnione.did;
 
+import com.zkrypto.signature.Schnorr;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -27,6 +28,7 @@ public class IssuerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(IssuerApplication.class, args);
+        System.load(System.getProperty("user.dir") + "/libs/libOpenDID_Hackathon.dylib");
     }
 
 }

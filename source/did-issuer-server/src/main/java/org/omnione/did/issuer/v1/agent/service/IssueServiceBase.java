@@ -808,7 +808,7 @@ public abstract class IssueServiceBase implements IssueService {
             VerifiableCredential verifiableCredential = vcManager.issueCredential(issueVcParam, holderDid);
             List<SignatureVcParams> signatureParams = vcManager.getOriginDataForSign("assert", didDocument, verifiableCredential);
             
-            // 서명
+            // TODO: 서명 변경
             signVc(signatureParams);
 
             verifiableCredential = vcManager.addProof(verifiableCredential, signatureParams);

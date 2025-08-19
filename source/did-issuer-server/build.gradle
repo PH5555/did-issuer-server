@@ -92,10 +92,7 @@ dependencyManagement {
 }
 
 tasks.named('test') {
-    useJUnitPlatform {
-        exclude("org/**/service/*.class")
-        exclude("org/**/*.class")
-    }
+    useJUnitPlatform ()
 }
 
 import com.github.jk1.license.render.*

@@ -19,6 +19,7 @@ package org.omnione.did.issuer.v1.agent.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.omnione.did.base.crypto.CryptoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -112,6 +113,7 @@ public abstract class IssueServiceBase implements IssueService {
     private final ZkpWalletService zkpWalletService;
     private final ZkpCredentialDefinitionQueryService zkpCredentialDefinitionQueryService;
     private final ZkpSchemaQueryService zkpSchemaQueryService;
+    private final CryptoService cryptoService;
 
     /**
      * Generates an offer for issuing a Verifiable Credential.
@@ -921,6 +923,7 @@ public abstract class IssueServiceBase implements IssueService {
             String originData = signatureParam.getOriginData();
 
             byte[] sign = walletService.generateCompactSignature(signatureParam.getKeyId(), originData);
+
             String signatureValue = BaseMultibaseUtil.encode(sign);
 
             signatureParam.setSignatureValue(signatureValue);

@@ -1,22 +1,24 @@
 package org.omnione.did.base.crypto;
 
+import com.zkrypto.domain.KeyPair;
 import com.zkrypto.signature.Schnorr;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @Getter
-public class SchnorrService {
-    private String privateKey;
-    private String publicKey;
+public class CryptoService {
+    private final Map<String, KeyPair> keys = new HashMap<>();
 
-    public SchnorrService() {
+    public CryptoService() {
         System.load(System.getProperty("user.dir") + "/libs/libOpenDID_Hackathon.dylib");
     }
 
-    public void generateKeys() {
+    public void generateKey(String keyId) {
         String[] keyPair = Schnorr.generateKeys();
-        this.publicKey = keyPair[0];
-        this.privateKey = keyPair[1];
+        keys.put(keyId, new KeyPair(keyPair[0], keyPair[1]));
     }
 }

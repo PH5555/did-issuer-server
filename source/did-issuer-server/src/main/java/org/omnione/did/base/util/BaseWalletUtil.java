@@ -16,11 +16,10 @@
 
 package org.omnione.did.base.util;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.omnione.did.base.datamodel.enums.EccCurveType;
 import org.omnione.did.base.exception.ErrorCode;
 import org.omnione.did.base.exception.OpenDidException;
-import org.omnione.did.wallet.crypto.sign.SignatureHelper;
 import org.omnione.did.wallet.enums.WalletEncryptType;
 import org.omnione.did.wallet.exception.WalletException;
 import org.omnione.did.wallet.key.WalletManagerFactory;
@@ -43,8 +42,8 @@ import static org.omnione.did.zkp.exception.ZkpErrorCode.ERR_CODE_ZKP_WALLET_ALR
  * as well as performing cryptographic operations using wallet keys.
  */
 @Slf4j
+@RequiredArgsConstructor
 public class BaseWalletUtil {
-
     /**
      * Creates a new file-based wallet at the specified path with the given password.
      * The wallet is encrypted using AES-256-CBC with PKCS5 padding.

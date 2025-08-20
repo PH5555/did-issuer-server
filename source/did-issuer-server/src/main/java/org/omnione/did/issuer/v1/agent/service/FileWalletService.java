@@ -16,6 +16,7 @@
 
 package org.omnione.did.issuer.v1.agent.service;
 
+import org.omnione.did.base.crypto.CryptoService;
 import lombok.extern.slf4j.Slf4j;
 import org.omnione.did.base.exception.ErrorCode;
 import org.omnione.did.base.exception.OpenDidException;
@@ -26,6 +27,7 @@ import org.omnione.did.wallet.key.WalletManagerInterface;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Service for managing wallet operations, including connection and signature generation.
@@ -36,10 +38,13 @@ import java.nio.charset.StandardCharsets;
 public class FileWalletService {
     private final WalletProperty walletProperty;
     private final WalletManagerInterface walletManager;
+    private final CryptoService cryptoService;
 
-    public FileWalletService(WalletProperty walletProperty) {
+
+    public FileWalletService(WalletProperty walletProperty, CryptoService cryptoService) {
         this.walletProperty = walletProperty;
         this.walletManager = BaseWalletUtil.getFileWalletManager();
+        this.cryptoService = cryptoService;
     }
 
     /**
@@ -93,12 +98,13 @@ public class FileWalletService {
     }
 
     public WalletManagerInterface initializeWalletWithKeys() {
-        WalletManagerInterface walletManager = BaseWalletUtil.initializeWalletWithKeys(
-                walletProperty.getFilePath(),
-                walletProperty.getPassword(),
-                "auth", "assert", "keyagree", "invoke"
-        );
-
+//        WalletManagerInterface walletManager = BaseWalletUtil.initializeWalletWithKeys(
+//                walletProperty.getFilePath(),
+//                walletProperty.getPassword(),
+//                "auth", "assert", "keyagree", "invoke"
+//        );
+        // schnorr로 변경
+        List.of("auth", "assert", "keyagree", "invoke").forEach(cryptoService::generateKey);
         return walletManager;
     }
 }

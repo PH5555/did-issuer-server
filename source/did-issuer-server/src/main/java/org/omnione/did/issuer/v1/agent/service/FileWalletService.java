@@ -98,12 +98,13 @@ public class FileWalletService {
     }
 
     public WalletManagerInterface initializeWalletWithKeys() {
-//        WalletManagerInterface walletManager = BaseWalletUtil.initializeWalletWithKeys(
-//                walletProperty.getFilePath(),
-//                walletProperty.getPassword(),
-//                "auth", "assert", "keyagree", "invoke"
-//        );
-        // schnorr로 변경
+        WalletManagerInterface walletManager = BaseWalletUtil.initializeWalletWithKeys(
+                walletProperty.getFilePath(),
+                walletProperty.getPassword(),
+                "auth", "assert", "keyagree", "invoke"
+        );
+
+        // schnorr 키 추가
         List.of("auth", "assert", "keyagree", "invoke").forEach(cryptoService::generateKey);
         return walletManager;
     }

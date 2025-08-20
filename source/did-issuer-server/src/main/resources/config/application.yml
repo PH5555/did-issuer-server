@@ -1,6 +1,12 @@
 spring:
   application:
     name: Issuer
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
   profiles:
     active: sample
     group:

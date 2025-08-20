@@ -83,6 +83,9 @@ dependencies {
     implementation 'com.google.code.gson:gson'
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 dependencyManagement {

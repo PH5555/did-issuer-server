@@ -7,6 +7,9 @@ import com.zkrypto.domain.IssueType;
 import com.zkrypto.domain.KeyPair;
 import com.zkrypto.signature.Schnorr;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.K;
+import org.omnione.did.issuer.v1.agent.service.KeyRedisService;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -16,15 +19,16 @@ import java.util.Map;
 @Service
 @Getter
 public class CryptoService {
-    private final Map<String, KeyPair> keys = new HashMap<>();
+    private final KeyRedisService keyRedisService;
 
-    public CryptoService() {
+    public CryptoService(KeyRedisService keyRedisService) {
+        this.keyRedisService = keyRedisService;
         System.load(System.getProperty("user.dir") + "/libs/libOpenDID_Hackathon.dylib");
     }
 
     public void generateKey(String keyId) {
         String[] keyPair = Schnorr.generateKeys();
-        keys.put(keyId, new KeyPair(keyPair[0], keyPair[1]));
+        keyRedisService.setKeyPair(keyId, new KeyPair(keyPair[0], keyPair[1]));
     }
 
     public String sign(String keyId, String data, String issueType) {
@@ -35,7 +39,8 @@ public class CryptoService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        KeyPair keyPair = keys.get(keyId);
+
+        KeyPair keyPair = keyRedisService.getKeyPair(keyId).orElseThrow(() -> new RuntimeException("키가 존재하지 않습니다."));
 
         String signature = "";
         if(issueType.equals(IssueType.EDUCATION.name())) {

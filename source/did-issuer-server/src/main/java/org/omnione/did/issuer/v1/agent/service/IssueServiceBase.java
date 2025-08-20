@@ -364,13 +364,14 @@ public abstract class IssueServiceBase implements IssueService {
             validateRequestVc(transaction, reqVc);
             System.out.println("reqVc.toJson() = " + reqVc.toJson());
             log.debug("\t--> Find User By VC Profile");
-            Long vcSchemaId = issueProfileQueryService.findById(transaction.getIssueProfileId()).getVcSchemaId();
+            IssueProfile profile = issueProfileQueryService.findById(transaction.getIssueProfileId());
+            Long vcSchemaId = profile.getVcSchemaId();
             User user = findUserByVcProfileAndVcSchemaId(vcProfile, vcSchemaId); // @@
             VcManager vcManager = new VcManager();
 
             log.debug("\t--> Issuing VC");
             VerifiableCredential verifiableCredential = issueVerifiableCredential(vcManager,
-                    vcProfile.getDid(), user.getData(), vcSchemaId);
+                    vcProfile.getDid(), user.getData(), vcSchemaId, profile);
             log.debug("\t--> VerifiableCredential {}", verifiableCredential.toJson());
 
             log.debug("\t--> Registering VC to B/C");
@@ -791,7 +792,7 @@ public abstract class IssueServiceBase implements IssueService {
      * @throws OpenDidException if there's an error in the VC issuance process.
      */
     private VerifiableCredential issueVerifiableCredential(VcManager vcManager, String holderDid, String data
-            , Long vcSchemaId) {
+            , Long vcSchemaId, IssueProfile profile) {
         log.debug("\t--> Issue Verifiable Credential");
         try {
 
@@ -811,7 +812,7 @@ public abstract class IssueServiceBase implements IssueService {
             List<SignatureVcParams> signatureParams = vcManager.getOriginDataForSign("assert", didDocument, verifiableCredential);
             
             // TODO: 서명 변경
-            signVc(signatureParams);
+            signVc(signatureParams, profile);
 
             verifiableCredential = vcManager.addProof(verifiableCredential, signatureParams);
 
@@ -918,13 +919,16 @@ public abstract class IssueServiceBase implements IssueService {
      *
      * @param signatureParams The signature parameters to use for signing the VC.
      */
-    private void signVc(List<SignatureVcParams> signatureParams) {
+    private void signVc(List<SignatureVcParams> signatureParams, IssueProfile profile) {
         for (SignatureParams signatureParam : signatureParams) {
             String originData = signatureParam.getOriginData();
 
-            byte[] sign = walletService.generateCompactSignature(signatureParam.getKeyId(), originData);
+//            byte[] sign = walletService.generateCompactSignature(signatureParam.getKeyId(), originData);
+//
+//            String signatureValue = BaseMultibaseUtil.encode(sign);
 
-            String signatureValue = BaseMultibaseUtil.encode(sign);
+            // schnorr signature로 변경
+            String signatureValue = cryptoService.sign(signatureParam.getKeyId(), originData, profile.getTitle());
 
             signatureParam.setSignatureValue(signatureValue);
         }

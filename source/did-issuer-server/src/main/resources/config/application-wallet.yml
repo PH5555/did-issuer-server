@@ -1,7 +1,7 @@
 wallet:
-  file-path:
+  file-path: /Users/gimdonghyeon/did-orchestrator-server/source/did-orchestrator-server/shells/Besu/../../jars/Issuer/issuer.wallet
   password: omnioneopendid12!@
 
 zkp-wallet:
-  file-path:
+  file-path: /Users/gimdonghyeon/did-orchestrator-server/source/did-orchestrator-server/shells/Besu/../../jars/Issuer/issuer.zkpwallet
   password: omnioneopendid12!@

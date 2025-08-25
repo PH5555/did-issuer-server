@@ -17,6 +17,7 @@
 package org.omnione.did.issuer.v1.agent.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.omnione.did.base.crypto.CryptoService;
 import org.omnione.did.base.datamodel.data.Holder;
 import org.omnione.did.base.db.domain.User;
 import org.omnione.did.base.db.domain.VcProfile;
@@ -52,11 +53,12 @@ public class IssueInitIssueService extends IssueServiceBase {
                                  VcSchemaQueryService vcSchemaQueryService, IssueProfileQueryService issueProfileQueryService,
                                  IssuerInfoQueryService issuerInfoQueryService, ZkpWalletService zkpWalletService,
                                  ZkpCredentialDefinitionQueryService zkpCredentialDefinitionQueryService,
-                                 ZkpSchemaQueryService zkpSchemaQueryService) {
+                                 ZkpSchemaQueryService zkpSchemaQueryService,
+                                 CryptoService cryptoService) {
         super(vcProfileQueryService, vcOfferQueryService, transactionService, e2EQueryService, vcQueryService
                 , storageService, walletService, issueProfileQueryService, vcSchemaService
                 , vcSchemaQueryService, issuerInfoQueryService, zkpWalletService, zkpCredentialDefinitionQueryService,
-                zkpSchemaQueryService);
+                zkpSchemaQueryService, cryptoService);
         this.userQueryService = userQueryService;
     }
 

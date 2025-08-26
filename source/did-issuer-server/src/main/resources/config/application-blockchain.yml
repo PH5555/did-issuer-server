@@ -1,2 +1,2 @@
 blockchain:
-  file-path: /Users/gimdonghyeon/did-orchestrator-server/source/did-orchestrator-server/shells/Besu/Issuer/blockchain.properties
+  file-path: /home/ubuntu/did-orchestrator-server/source/did-orchestrator-server/shells/Besu/Issuer/blockchain.properties
